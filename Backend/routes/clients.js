@@ -27,4 +27,20 @@ router.delete("/:id", authMiddleware("admin"), (req, res) => {
   });
 });
 
+router.put("/:id", authMiddleware("admin"), (req, res) => {
+  const { name, email } = req.body;
+  db.run("UPDATE Clients SET name = ?, email = ? WHERE id = ?", [name, email, req.params.id], function (err) {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ updated: this.changes });
+  });
+});
+
+router.put("/edit/me/:id", authMiddleware(), (req, res) => {
+  const { name, email } = req.body;
+  db.run("UPDATE Clients SET name = ?, email = ? WHERE id = ?", [name, email, req.params.id], function (err) {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ updated: this.changes });
+  });
+});
+
 module.exports = router;
