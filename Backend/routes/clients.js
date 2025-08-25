@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
+const bcrypt = require("bcryptjs");
 const { authMiddleware } = require("./middleware");
 
 //traer todo de un solo cliente 
@@ -40,6 +41,23 @@ router.put("/:id", authMiddleware("admin"), (req, res) => {
 router.put("/edit/me/:id", authMiddleware(), (req, res) => {
   const { name, email } = req.body;
   db.run("UPDATE Clients SET name = ?, email = ? WHERE id = ?", [name, email, req.params.id], function (err) {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ updated: this.changes });
+  });
+});
+
+router.put("/password/:id", authMiddleware("admin"), (req, res) => {
+  const { password } = req.body;
+  password2 = bcrypt.hashSync(password, 10);
+  db.run("UPDATE Clients SET password = ? WHERE id = ?", [password2, req.params.id], function (err) {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ updated: this.changes });
+  });
+});
+router.put("/edit/password/:id", authMiddleware(), (req, res) => {
+  const { password } = req.body;
+  password2 = bcrypt.hashSync(password, 10);
+  db.run("UPDATE Clients SET password = ? WHERE id = ?", [password2, req.params.id], function (err) {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ updated: this.changes });
   });

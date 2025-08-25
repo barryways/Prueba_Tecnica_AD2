@@ -47,6 +47,14 @@ export default function ClientDashboard() {
     await loadAll();
   };
 
+  const handleChangePassword = async (id) => {
+    const newPassword = prompt("Nueva contraseña:");
+    if (!newPassword) return;
+
+    await api.put(`/clients/edit/password/${id}`, { password: newPassword });
+    await loadAll();
+  };
+
   return (
     <div className="container py-4">
       <h3 className="mb-3">Panel del cliente</h3>
@@ -62,6 +70,12 @@ export default function ClientDashboard() {
           onClick={() => editClient()}
         >
           Editar mis datos
+        </button>
+        <button
+          className="btn btn-sm btn-outline-danger"
+          onClick={() => handleChangePassword(me.id)}
+        >
+          Cambiar contraseña
         </button>
       </div>
       <div className="row g-4">

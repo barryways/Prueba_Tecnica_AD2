@@ -34,4 +34,18 @@ router.post("/login", (req, res) => {
   });
 });
 
+//registrar admins
+router.post("/register/admin", (req, res) => {
+  const { name, email, password } = req.body;
+  const hash = bcrypt.hashSync(password, 10);
+
+  db.run("INSERT INTO Clients (name, email, password, role) VALUES (?, ?, ?, ?)",
+    [name, email, hash, "admin"],
+    function (err) {
+      if (err) return res.status(400).json({ error: err.message });
+      res.json({ id: this.lastID, name, email, role: "admin" });
+    }
+  );
+});
+
 module.exports = router;

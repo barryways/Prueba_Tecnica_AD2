@@ -40,11 +40,24 @@ export default function AdminDashboard() {
     await api.put(`/clients/${id}`, { name, email });
     await loadAll();
   };
+  const handleAddAdmin = async () => {
+    const name = prompt("Nombre del nuevo admin:");
+    const email = prompt("Email del nuevo admin:");
+    const password = prompt("Contraseña del nuevo admin:");
+    if (!name || !email || !password) return;
+
+    await api.post("/auth/register/admin", { name, email, password });
+    await loadAll();
+  };
 
   return (
     <div className="container py-4">
       <h3 className="mb-3">Panel de administración</h3>
 
+      <button className="btn btn-sm btn-outline-primary mb-3"
+              onClick={handleAddAdmin}>
+        Agregar Admin
+      </button>
       <div className="row g-4">
         <div className="col-md-6">
           <div className="card p-3">
