@@ -6,6 +6,8 @@ const db = new sqlite3.Database("./database.db", (err) => {
   else console.log("Conectado a SQLite.");
 });
 
+
+//creacion de tablas e insercion de usuarios si aun no existen.
 db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS Clients (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -32,6 +34,16 @@ db.serialize(() => {
     date TEXT,
     FOREIGN KEY(clientId) REFERENCES Clients(id)
   )`);
+
+   db.run(
+    `INSERT OR IGNORE INTO Clients (name, email, password, role)
+     VALUES ('Admin User', 'admin@example.com', '12345', 'admin')`
+  );
+
+  db.run(
+    `INSERT OR IGNORE INTO Clients (name, email, password, role)
+     VALUES ('Client User', 'client@example.com', '12345', 'client')`
+  );
 });
 
 module.exports = db;

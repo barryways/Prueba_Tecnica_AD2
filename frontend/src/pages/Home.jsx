@@ -85,7 +85,11 @@ const { auth } = useContext(AuthContext);
                 <div className="card-body">
                   <h5 className="card-title">{o.title}</h5>
                   <p className="card-text text-muted">{o.desc}</p>
+
+                
                   <Link to="/login" className="btn btn-dark btn-sm">Pedir ahora</Link>
+
+                  
                 </div>
               </div>
             </div>

@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const SECRET = "prueba_tecnica_Carlos"; 
 
+//middleware para verificar token y rol
 function authMiddleware(role = null) {
   return (req, res, next) => {
     const token = req.headers["authorization"]?.split(" ")[1];
